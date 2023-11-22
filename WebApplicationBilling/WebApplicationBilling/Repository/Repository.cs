@@ -23,18 +23,25 @@ namespace WebApplicationBilling.Repository
             var request = new HttpRequestMessage(HttpMethod.Get, url);
             var client = _httpClientFactory.CreateClient();
 
-            HttpResponseMessage responseMessage = client.SendAsync(request).Result;
-
-            //Validar la respuesta
-            if (responseMessage.StatusCode  == System.Net.HttpStatusCode.OK)
+            try
             {
-                var jsonString = await responseMessage.Content.ReadAsStringAsync();
+                HttpResponseMessage responseMessage = await client.SendAsync(request);
 
-                return JsonConvert.DeserializeObject<IEnumerable<T>>(jsonString);
+                if (responseMessage.IsSuccessStatusCode)
+                {
+                    var jsonString = await responseMessage.Content.ReadAsStringAsync();
+                    return JsonConvert.DeserializeObject<IEnumerable<T>>(jsonString);
+                }
+                else
+                {
+                    // Opcional: Manejar diferentes códigos de estado de manera más específica
+                    throw new HttpRequestException($"Request to {url} failed with status code {responseMessage.StatusCode}.");
+                }
             }
-            else
+            catch (Exception ex)
             {
-                return null;
+                // Opcional: Log the exception or handle it as needed
+                throw new ApplicationException($"Error fetching data from {url}", ex);
             }
         }
 

@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using System.Collections;
+using System.Text;
 using WebApplicationBilling.Repository.Interfaces;
 
 namespace WebApplicationBilling.Repository
@@ -50,9 +51,31 @@ namespace WebApplicationBilling.Repository
             throw new NotImplementedException();
         }
 
-        public Task<bool> PostAsync(string url, T entity)
+        public async Task<bool> PostAsync(string url, T entity)
         {
-            throw new NotImplementedException();
+           var request = new HttpRequestMessage(HttpMethod.Post, url);
+
+            if (entity !=null)
+            {
+                request.Content = new StringContent(JsonConvert.SerializeObject(entity), Encoding.UTF8, "application/json");
+            }
+            else
+            {
+                return false;
+            }
+
+            var client = _httpClientFactory.CreateClient();
+
+            HttpResponseMessage response = await client.SendAsync(request);
+            //Validar si se actualizo y retorna boleano
+            if (response.StatusCode == System.Net.HttpStatusCode.NoContent)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
 
         public Task<bool> UpdateAsync(string url, T entity)

@@ -46,18 +46,21 @@ namespace WebApplicationBilling.Controllers
         }
 
         // GET: CustomersController/Create
+        //Renderiza la vista
         public ActionResult Create()
         {
             return View();
         }
 
         // POST: CustomersController/Create
+        //Captura los datos y los lleva hacia el endpointpasando por el repositorio --> Nube--> DB
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(IFormCollection collection)
+        public async Task<IActionResult> Create(CustomerDTO customer)
         {
             try
             {
+                await _customerRepository.PostAsync(UrlResources.UrlBase + UrlResources.UrlCustomers, customer);
                 return RedirectToAction(nameof(Index));
             }
             catch

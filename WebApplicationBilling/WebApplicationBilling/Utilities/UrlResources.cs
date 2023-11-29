@@ -3,8 +3,8 @@
     public static class UrlResources
     {
 
-        public static string UrlBase = "https://billingceet.azurewebsites.net/";
-        public static string UrlCustomers = "api/Customers";
+        public static string UrlBase = "https://localhost:7136/";
+        public static string UrlCustomers = "api/Customers/";
 
     }
 }

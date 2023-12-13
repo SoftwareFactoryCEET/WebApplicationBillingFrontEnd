@@ -41,9 +41,15 @@ namespace WebApplicationBilling.Controllers
         }
 
         // GET: CustomersController/Details/5
-        public ActionResult Details(int id) //Pendiente. Reto para el aprendiz
+        public async Task<IActionResult> Details(int id) //Pendiente. Reto para el aprendiz
         {
-            return View();
+
+            var customer = await _customerRepository.GetByIdAsync(UrlResources.UrlBase + UrlResources.UrlCustomers, id);
+            if (customer == null)
+            {
+                return Json(new { success = false, message = "Cliente no encontrado." });
+            }
+            return View(customer);
         }
 
         // GET: CustomersController/Create

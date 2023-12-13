@@ -28,6 +28,7 @@ function initializeDataTable(customers) {
             { title: "ID", data: "id", className: "column-id" },
             { title: "Nombre", data: "firstName", className: "column-name" },
             { title: "Apellido", data: "lastName", className: "column-name" },
+            { title: "Ciudad", data: "city", className: "column-city" },
             { title: "País", data: "country", className: "column-country" },
             { title: "Teléfono", data: "phone", className: "column-phone" },
             {
@@ -35,9 +36,9 @@ function initializeDataTable(customers) {
                 data: "id",
                 render: function (data) {
                     return `<div class="text-center">
-                                <a href="/Customers/Detail/${data}" class="btn btn-primary"><i class="fa fa-eye"></i></a>
-                                <a href="/Customers/Edit/${data}" class="btn btn-secondary"><i class="fa fa-edit"></i></a>
-                                <a onclick="Delete('/Customers/Delete/${data}')" class="btn btn-danger"><i class="fa fa-trash"></i></a>
+                                <a href="/Customers/Detail/${data}" class=""><i class="fa fa-eye"></i></a>
+                                <a href="/Customers/Edit/${data}" class=""><i class="fa fa-edit"></i></a>
+                                <a onclick="Delete('/Customers/Delete/${data}')" class=""><i class="fa fa-trash"></i></a>
                             </div>`;
                 },
                 className: "column-actions"

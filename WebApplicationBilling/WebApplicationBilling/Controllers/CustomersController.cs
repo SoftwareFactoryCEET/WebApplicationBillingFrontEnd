@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using NuGet.Packaging.Core;
 using WebApplicationBilling.Models.DTO;
@@ -92,6 +93,8 @@ namespace WebApplicationBilling.Controllers
 
         // POST: CustomersController/Edit/5
         [HttpPost]
+        //[Authorize(Roles = "admin, registrado")]
+        //[AllowAnonymous]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(CustomerDTO customer)
         {
@@ -104,7 +107,7 @@ namespace WebApplicationBilling.Controllers
             return View();
         }
 
-       
+        [Authorize(Roles="admin")]
         [HttpDelete]
         public async Task<IActionResult> Delete(int id)
         {

@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using NuGet.Packaging.Core;
 using WebApplicationBilling.Models.DTO;
@@ -41,9 +42,15 @@ namespace WebApplicationBilling.Controllers
         }
 
         // GET: CustomersController/Details/5
-        public ActionResult Details(int id) //Pendiente. Reto para el aprendiz
+        public async Task<IActionResult> Details(int id) //Pendiente. Reto para el aprendiz
         {
-            return View();
+
+            var customer = await _customerRepository.GetByIdAsync(UrlResources.UrlBase + UrlResources.UrlCustomers, id);
+            if (customer == null)
+            {
+                return Json(new { success = false, message = "Cliente no encontrado." });
+            }
+            return View(customer);
         }
 
         // GET: CustomersController/Create
@@ -86,6 +93,8 @@ namespace WebApplicationBilling.Controllers
 
         // POST: CustomersController/Edit/5
         [HttpPost]
+        //[Authorize(Roles = "admin, registrado")]
+        //[AllowAnonymous]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(CustomerDTO customer)
         {
@@ -98,7 +107,7 @@ namespace WebApplicationBilling.Controllers
             return View();
         }
 
-       
+        [Authorize(Roles="admin")]
         [HttpDelete]
         public async Task<IActionResult> Delete(int id)
         {
